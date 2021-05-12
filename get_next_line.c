@@ -12,6 +12,26 @@
 
 #include "get_next_line.h"
 
+char	*ft_add_line(char *str)
+{
+	int		i;
+	char	*new_line;
+
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i] && str[i] != '\n')
+		i++;
+	new_line = (char *)malloc(sizeof(char) * (i + 1));
+	if (NULL == new_line)
+		return (NULL);
+	new_line[i--] = '\0';
+	while (i--)
+		new_line[i] = str[i];
+	free(str);
+	return (new_line);
+}
+
 int	get_next_line(int fd, char **line)
 {
 	char		*buf;
@@ -26,12 +46,12 @@ int	get_next_line(int fd, char **line)
 	{
 		read_return = read(fd, buf, BUFFER_SIZE);
 		buf[read_return] = '\0';
-		str = /* add the contents of the buffer to the string */;
+		str = ft_joinstr(str, buf);
 	}
 	free(buf);
 	if (read_return == -1)
 		return (-1);
-	*line = /* add str into line */;
+	*line = ft_add_line(str);
 	if (!read_return)
 		return (0);
 	return (1);
